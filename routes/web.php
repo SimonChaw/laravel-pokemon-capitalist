@@ -22,7 +22,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/pokemon/encounter', [PokemonController::class, 'encounter'])->name('pokemon.encounter');
-
+    Route::post('/pokemon/catch', [PokemonController::class, 'catch'])->name('pokemon.catch');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -44,4 +44,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function items()
+    {
+        // Returning a many-to-many relationship:
+        return $this->belongsToMany(Item::class, 'item_users')->withPivot('quantity');
+            // connecting 'item_users' table to the 'Item' model class, to use it.
+    }
 }
