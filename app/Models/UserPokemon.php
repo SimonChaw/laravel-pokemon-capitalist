@@ -9,4 +9,8 @@ class UserPokemon extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function pokemon() {
+        return $this->belongsTo(Pokemon::class);
+    }
 }

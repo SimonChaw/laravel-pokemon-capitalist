@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
-export default function Authenticated({ user, header, children }) {
+export default function Authenticated({ user, header, children, message }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+
+    const [showFlashMessage, setShowFlashMessage] = useState(true); // this makes the message appear.
+    setTimeout(() => setShowFlashMessage(false), 1500)// this makes the message disappear after 5 seconds.
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -25,7 +28,10 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
                                 <NavLink href={route('pokemon.encounter')} active={route().current('pokemon.encounter')}>
-                                    Encouter Pokemon
+                                    Wild Area
+                                </NavLink>
+                                <NavLink href={route('shop.index')} active={route().current('shop.index')}>
+                                    PokeMart
                                 </NavLink>
                             </div>
                         </div>
@@ -101,6 +107,9 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('pokemon.encounter')} active={route().current('pokemon.encounter')}>
                             Encouter Pokemon
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('pokemon.encounter')} active={route().current('shop.index')}>
+                            Shop
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
@@ -121,11 +130,24 @@ export default function Authenticated({ user, header, children }) {
 
             {header && (
                 <header className="bg-white dark:bg-gray-800 shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
+                        {header}
+                        <div className="text-white">Money: ₱{user.money}</div>
+                    </div>
                 </header>
             )}
 
-            <main>{children}</main>
+            <main>
+                {children}
+                { message && showFlashMessage && (        /* this is how to do a conditional-IF in React */
+                    <div className='w-full flex justify-center'>
+                        <div className='p-4 bg-green-400 border-green-500 rounded-md absolute mx-auto bottom-5'>
+                            {message}
+                        </div>
+                    </div>
+                )}
+
+            </main>
         </div>
     );
 }

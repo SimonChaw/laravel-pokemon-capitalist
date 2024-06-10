@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('pokemon_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('quantity');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('pokemon_id')->references('id')->on('pokemon');
             $table->timestamps();

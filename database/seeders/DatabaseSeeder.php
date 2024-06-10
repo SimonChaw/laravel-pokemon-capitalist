@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
 
         $pokeball = Item::create([
             'name' => 'Pokeball',
-            'value' => 100
+            'value' => 100,
+            'url' => '/images/ball.png'
         ]);
 
         // Give the user some pokeballs

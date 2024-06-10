@@ -34,6 +34,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+                // Shorthand: 'message' => fn () => Session::get('message')
+            ]
+            // Returns if the request has a message in the session
         ];
     }
 }

@@ -80,7 +80,7 @@ class PokemonController extends Controller
         
         $pokemon = Session::get("UserEncounter");
         
-            // Check if the pokemon was caught.
+        // Check if the pokemon was caught.
         if (!$pokemon->wasCaught())
         {
             Session::put("LastEncounterMessageIndex", $lastMessage === 2 ? 0 : $lastMessage + 1);
@@ -88,9 +88,11 @@ class PokemonController extends Controller
         }
         //else:
             
-            UserPokemon::create([ // storing caught pokemon to db:
+            UserPokemon::firstOrCreate([ // storing caught pokemon to db:
                 'user_id' => $user->id,
                 'pokemon_id' => $pokemon->id
+            ], [
+                'quantity' => 1 // Setting ownership quantity to 1.
             ]);
             return inertia('Pokemon/Victory', ['pokemon' => $pokemon]);
     }
