@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 
 export default function Dashboard({ auth, items, mons, flash }) {
@@ -12,13 +12,14 @@ export default function Dashboard({ auth, items, mons, flash }) {
         post(route('shop.buy', {
             item_id: itemId
         }))
+        
         setShowErrorMessage(true);
-        setTimeout(() => setShowErrorMessage(false), 1000);
+        setTimeout(() => setShowErrorMessage(false), 2000);
     };
 
-    const sellMon = (pokemonId) => {
+    const sellMon = (id) => {
         post(route('shop.sell', {
-            pokemon_id: pokemonId
+            user_pokemon_id: id
         }))
         setShowErrorMessage(true);
         setTimeout(() => setShowErrorMessage(false), 1000);
@@ -68,6 +69,13 @@ export default function Dashboard({ auth, items, mons, flash }) {
 
                         
                     </div>
+                    <div className='w-full flex justify-center'>
+                        {errors.generic && showErrorMessage && (
+                            <div className='p-4 bg-red-400 border-red-500 rounded-md'>
+                                {errors.generic}
+                            </div>
+                        )}
+                    </div>
                     <br></br>
 
                     {/* POKEMON TABLE */}
@@ -78,7 +86,7 @@ export default function Dashboard({ auth, items, mons, flash }) {
                                         <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Pokemon Name</th>
                                         <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Icon</th>
                                         <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">Cost</th>
-                                        <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">In Inventory</th>
+                                        <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"># Caught</th>
                                         <th className="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"></th>
                                     </tr>
                                 </thead>
@@ -88,9 +96,9 @@ export default function Dashboard({ auth, items, mons, flash }) {
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{ userPokemon.pokemon.name }</td>
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><img className='w-10' src={ userPokemon.pokemon.url } alt={ userPokemon.pokemon.name } /></td>
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">₽{ userPokemon.pokemon.value }</td>
-                                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">{ }</td>
+                                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">{ userPokemon.quantity }</td>
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400 text-center">
-                                                <button onClick={ () => sellMon(userPokemon.pokemon.id) } className="rounded-md px-6 py-2 text-white bg-red-500">Sell</button>
+                                                <button onClick={ () => sellMon(userPokemon.id) } className="rounded-md px-6 py-2 text-white bg-red-500">Sell</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -99,9 +107,9 @@ export default function Dashboard({ auth, items, mons, flash }) {
                     </div>
 
                     <div className='w-full flex justify-center'>
-                        {errors.generic && showErrorMessage && (
+                        {errors.pokemon && showErrorMessage && (
                             <div className='p-4 bg-red-400 border-red-500 rounded-md'>
-                                {errors.generic}
+                                {errors.pokemon}
                             </div>
                         )}
                     </div>

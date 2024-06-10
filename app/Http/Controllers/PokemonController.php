@@ -23,8 +23,20 @@ class PokemonController extends Controller
         }
         // If no key exists yet for a current session, generate a new pokemon to store to the session.
         else {
-            $rarity = rand(0, 1000);
-            $pokemon = Pokemon::where('rarity', '<=', $rarity)->inRandomOrder()->first();
+            // Generate a random number between 0 and 1
+            $u = mt_rand() / mt_getrandmax();
+
+            // Use the inverse transform sampling method to generate an exponentially distributed number
+            // Adjust the lambda parameter to control the skewness
+            $lambda = 0.005; // Higher lambda means fewer high values
+
+            // Inverse transform sampling formula for exponential distribution
+            $randomNumber = -log(1 - $u) / $lambda;
+
+            // Ensure the number is within the desired range (0 to 1000)
+            $rarity = min($randomNumber, 1000);
+
+            $pokemon = Pokemon::where('rarity', '<=', $rarity)->orderBy('rarity', 'desc')->first();
             Session::put("UserEncounter", $pokemon);
             // Put accepts a key and a value.
                 // Key is how we remember how to retrieve our value later.
@@ -88,12 +100,14 @@ class PokemonController extends Controller
         }
         //else:
             
-            UserPokemon::firstOrCreate([ // storing caught pokemon to db:
+            $userPokemon = UserPokemon::firstOrCreate([ // storing caught pokemon to db:
                 'user_id' => $user->id,
                 'pokemon_id' => $pokemon->id
             ], [
-                'quantity' => 1 // Setting ownership quantity to 1.
+                'quantity' => 0 // Setting ownership quantity to 0.
             ]);
+            $userPokemon->increment('quantity');
+
             return inertia('Pokemon/Victory', ['pokemon' => $pokemon]);
     }
 }

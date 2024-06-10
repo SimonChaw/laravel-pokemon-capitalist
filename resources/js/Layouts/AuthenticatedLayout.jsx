@@ -9,7 +9,11 @@ export default function Authenticated({ user, header, children, message }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     const [showFlashMessage, setShowFlashMessage] = useState(true); // this makes the message appear.
-    setTimeout(() => setShowFlashMessage(false), 1500)// this makes the message disappear after 5 seconds.
+    useEffect(() => {
+        setShowFlashMessage(true);
+        setTimeout(() => setShowFlashMessage(false), 2000)// this makes the message disappear after 5 seconds.
+    }, [message]);
+    
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">

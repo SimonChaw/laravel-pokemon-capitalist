@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     // SHOP!
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::post('/shop/buy/{item_id}', [ShopController::class, 'buy'])->name('shop.buy');
-    Route::post('/shop/sell/{pokemon_id}', [ShopController::class, 'sell'])->name('shop.sell');
+    Route::post('/shop/sell/{user_pokemon_id}', [ShopController::class, 'sell'])->name('shop.sell');
 
     // EDIT PROFILE!
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

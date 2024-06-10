@@ -22,9 +22,8 @@ class ShopController extends Controller
         // TO DO: Load all the pokemon that the user has caught user $user->pokemon
         // Display it in the shop, using a table that is the same as the items table,
             // but instead you have a sell button.
-        $pokemon = UserPokemon::where('user_id', $user->id)->with('pokemon')->get();
+        $pokemon = UserPokemon::where('user_id', $user->id)->where('quantity', '>', 0)->with('pokemon')->get();
 
-        dd($pokemon);
         return inertia('Shop', [
             'items' => $items,
             'mons' => $pokemon
@@ -50,23 +49,26 @@ class ShopController extends Controller
         ]);
         $itemUser->increment('quantity'); // Adding the recently purchased item to the quantity, piling up the owned items.
         // Return them to the shop-page and let them know the item was successfully purchased.
-        Session::flash('message', "You purchased 1 {$item->name}");
+        Session::flash('message', "You purchased 1 {$item->name}. You now have {$itemUser->quantity}");
         return redirect()->route('shop.index'); // redirecting back to shop.
     }
 
-    public function sell(Request $request, int $pokemon_id) {
-        // Find the pokemon that the user wants to sell.
-        $pokemon = UserPokemon::find($pokemon_id); // Tracks all the pokemon that the user has.
+    public function sell(Request $request, int $user_pokemon_id)
+    {
+        $user = $request->user();
+        $userPokemon = UserPokemon::where('user_id', $user->id)->with('pokemon')->find($user_pokemon_id);
 
-        // If the user doesn't have the pokemon, return an error to the shop page.
-        if (!$pokemon)
-            return redirect()->route('shop.index')->withErrors(['generic' => "You don't have any of that pokemon left."]);
-        // Otherwise, sell the pokemon and decrement the quantity in the UserPokemon record.
-        // Add the money that the pokemon is worth to the trainer (exponential function based on rarity in pokemon model).
-        //$userMonSell->decrement();
-        //$user->increment('money', $pokemon->value);
-        // Redirect back to shop with a success message.
-        Session::flash('message', "You sold {$pokemon->name}");
-        return redirect()->route('shop.index');
+        if (!$userPokemon && $userPokemon->quantity < 1) {
+            return redirect()->route('shop.index')->withErrors(['pokemon' => "You don't have this Pokemon!"]);
+        } 
+
+        // Pokemon is the record from the pokemon table that is assoicated to the UserPokemon record
+        $pokemon = $userPokemon->pokemon;
+        // Whatever the value of the pokemon attached to the user pokemon that the user owns is worth, add that value to the user's money
+        $user->increment('money', $pokemon->value);
+        $userPokemon->decrement('quantity');
+
+        Session::flash('message', "You sold 1 {$pokemon->name} for ₱{$pokemon->value}");
+        return redirect()->route('shop.index'); // redirecting back to shop.
     }
 }
