@@ -55,7 +55,7 @@ export default function Dashboard({ auth, items, mons, flash }) {
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{ item.name }</td>
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><img className='w-10' src={ item.url } alt={ item.name } /></td>
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">₽{ item.value }</td>
-                                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">{ item.users[0].pivot.quantity ?? 0 }</td>
+                                            <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">{ item.users[0]?.pivot.quantity ?? 0 }</td>
                                                 {/*IF there is a user in index-0, display value, else 0.*/}
                                             <td className="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400 text-center">
                                                 <button onClick={ () => buyItem(item.id) } className="rounded-md px-6 py-2 text-white bg-indigo-500">Buy</button>

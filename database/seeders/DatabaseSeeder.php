@@ -29,6 +29,18 @@ class DatabaseSeeder extends Seeder
             'url' => '/images/ball.png'
         ]);
 
+        Item::create([
+            'name' => 'Great Ball',
+            'value' => 500,
+            'url' => '/images/greatball.png'
+        ]);
+
+        Item::create([
+            'name' => 'Ultra Ball',
+            'value' => 1000,
+            'url' => '/images/ultraball.png'
+        ]);
+
         // Give the user some pokeballs
         ItemUser::create([
             'item_id' => $pokeball->id,

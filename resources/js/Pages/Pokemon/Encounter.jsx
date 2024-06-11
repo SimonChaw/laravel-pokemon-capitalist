@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Pokemon from '@/Components/Pokemon';
 import { Head, useForm, usePage, router } from '@inertiajs/react';
-import classNames from 'classnames';
+import PokeballButton from '@/Components/PokeballButton';
 
-export default function Encounter({ auth, pokemon, pokeballsRemaining }) {
+export default function Encounter({ auth, pokemon, items }) {
 
     {/* Functions exist in JSX files so that code can be run on the client side.
         This allows clients to navigate between pages or do operations without
@@ -16,19 +16,9 @@ export default function Encounter({ auth, pokemon, pokeballsRemaining }) {
         get(route('pokemon.encounter', {'new' : true}));
     };
 
-    const attemptCatch = () => {
-        post(route('pokemon.catch'))
+    const attemptCatch = (pokeballId) => {
+        router.post(route('pokemon.catch'), { pokeball_id : pokeballId })
     };
-
-    const hasPokeballs = pokeballsRemaining === 0;
-
-    const throwBtnClasses = classNames(
-        'bg-slate-800 dark:bg-slate-900 text-white mr-2 p-4 rounded-md flex items-center',
-        {'disabled:opacity-75 cursor-not-allowed' : hasPokeballs}
-            // The part in '' is the classNames that are applied if the condition after : is met.
-            // In this example, we apply 'disabled:opacity-75 cursor-not-allowed' as classes to our 
-                //HTML element if pokeballs remaining is = to 0.
-    )
 
     return (
         <AuthenticatedLayout
@@ -49,12 +39,8 @@ export default function Encounter({ auth, pokemon, pokeballsRemaining }) {
                             {errors.generic && <div className="p-4 border border-red-500 bg-red-400">{errors.generic}</div>}
                         </div>
 
-                        <div className="pt-8 flex items-center justify-center">
-                            {/* Throw Pokeball button */}
-                            <button onClick={ attemptCatch } disabled={hasPokeballs} className={throwBtnClasses}>
-                                <img src="/images/ball.png" className="w-5 mr-2" />
-                                Throw Pokeball! ({pokeballsRemaining})
-                            </button>
+                        <div className="pt-8 flex justify-center">
+                            <PokeballButton click={ attemptCatch } items={ items } />
 
                             {/* Find pokemon button */}
                             <button onClick={ findNewPokemon } className="bg-slate-800 dark:bg-slate-900 text-white p-4 rounded-md flex items-center">

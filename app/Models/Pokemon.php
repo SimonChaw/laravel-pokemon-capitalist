@@ -11,9 +11,14 @@ class Pokemon extends Model
 
     protected $appends = ['value'];
 
-    public function wasCaught(): bool
+    public function wasCaught(Item $item): bool
     {
-        return 100 - rand(10, $this->rarity / 10) > 80;
+        $escapeRate = match($item->name) {
+            'Pokeball' => 95,
+            'Great Ball' => 80,
+            'Ultra Ball' => 60
+        };
+        return 100 - rand(10, $this->rarity / 10) > $escapeRate;
     }
 
     public function getValueAttribute()
