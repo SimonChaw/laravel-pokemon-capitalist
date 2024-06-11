@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export default function PokeballButton({ items, click }) {
 
-    const [selectedBall, setSelectedBall] = useState(items[0]);
+    const [selectedBall, setSelectedBall] = useState(items.find((item) => item.pivot.quantity > 0));
 
     const hasPokeballs = selectedBall.pivot.quantity > 0;
 
