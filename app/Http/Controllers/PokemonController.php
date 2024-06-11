@@ -101,4 +101,15 @@ class PokemonController extends Controller
 
             return inertia('Pokemon/Victory', ['pokemon' => $pokemon]);
     }
+
+    public function dex(Request $request)
+    {
+        $user = $request->user(); // getting the user info out of the request.
+
+        // this query is tied/scoped to the user:
+        $pokemon = Pokemon::query()->with([
+            'users' => fn($query) => $query->where('user_id', $user->id)->select('users.id')
+        ])->get();
+        return inertia('Pokemon/Dex', ['pokemon' => $pokemon]);
+    }
 }

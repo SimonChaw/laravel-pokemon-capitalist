@@ -37,6 +37,9 @@ export default function Authenticated({ user, header, children, message }) {
                                 <NavLink href={route('shop.index')} active={route().current('shop.index')}>
                                     PokeMart
                                 </NavLink>
+                                <NavLink href={route('pokemon.dex')} active={route().current('pokemon.dex')}>
+                                    Pokedex
+                                </NavLink>
                             </div>
                         </div>
 
@@ -109,10 +112,13 @@ export default function Authenticated({ user, header, children, message }) {
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('pokemon.encounter')} active={route().current('pokemon.encounter')}>
-                            Encouter Pokemon
+                            Wild Area
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('pokemon.encounter')} active={route().current('shop.index')}>
-                            Shop
+                        <ResponsiveNavLink href={route('shop.index')} active={route().current('shop.index')}>
+                            PokeMart
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('pokemon.dex')} active={route().current('pokemon.dex')}>
+                            Pokedex
                         </ResponsiveNavLink>
                     </div>
 

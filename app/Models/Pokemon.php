@@ -34,4 +34,10 @@ class Pokemon extends Model
         // Return the price, formatted to 2 decimal places
         return round($price);
     }
+
+    // Called "users" because that's what we want the relationship with
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_pokemon');
+    }
 }

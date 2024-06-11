@@ -27,6 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pokemon/encounter', [PokemonController::class, 'encounter'])->name('pokemon.encounter');
     Route::post('/pokemon/catch', [PokemonController::class, 'catch'])->name('pokemon.catch');
 
+    // POKEDEX!
+    Route::get('/pokemon/dex', [PokemonController::class, 'dex'])->name('pokemon.dex');
+
     // SHOP!
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::post('/shop/buy/{item_id}', [ShopController::class, 'buy'])->name('shop.buy');

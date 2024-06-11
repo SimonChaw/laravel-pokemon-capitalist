@@ -24,7 +24,7 @@ export default function PokeballButton({ items, click }) {
             {/* Throw Pokeball button */}
             <button onClick={ () => click(selectedBall.id) } disabled={!hasPokeballs} className={throwBtnClasses}>
                 <img src={selectedBall.url} className="w-5 mr-2" />
-                Throw {selectedBall.name}! ({selectedBall.pivot.quantity})
+                Throw {selectedBall.name}!
             </button>
 
             <select className='rounded-sm mt-2 mr-2' onChange={ ballSelected }>
